@@ -13,6 +13,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
     # see: https://github.com/aws-actions/configure-aws-credentials  
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+        
     - name: Install GLIBC
       run: |
         sudo apt-get update && sudo apt-get install -y libc6
@@ -21,15 +29,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '14.x'  
-        
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
-
-
+      
     # see: https://github.com/aws-actions/amazon-ecr-login
     - name: Log in to Amazon ECR
       id: login-ecr
@@ -53,8 +53,7 @@ jobs:
 
     - name: Install GLIBC inside Docker 
       run: |
-        apt-get update 
-        apt-get install -y libc6
+        apt-get update && apt-get install -y libc6
 
     
     - name: Fire SageMaker
