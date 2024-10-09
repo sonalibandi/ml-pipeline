@@ -79,7 +79,7 @@ jobs:
         IAM_ROLE_NAME: ${{ secrets.IAM_ROLE_NAME }}
         GITHUB_SHA: ${{ github.sha }}
       run: |
-        python training-job.py
+        python3 training-job.py
 
         # Create a markdown file with the training job details
         echo "Training Job Submission Report" > report.md
