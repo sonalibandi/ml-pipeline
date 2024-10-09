@@ -54,5 +54,12 @@ jobs:
       run: |
         pip install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests fsspec s3fs tabulate
         python training-job.py
+
+        # Create a markdown file with the training job details
+        echo "Training Job Submission Report" > report.md
+        echo "Training Job name: '$(cat training_job_name.txt)'" >> report.md
+        echo "Model Artifacts Location: 's3://$BUCKET_NAME/$PREFIX/output/$(cat training_job_name.txt)/model.tar.gz'" >> report.md
+        echo "Model hyperparameters: $(cat hyperparameters.txt)" >> report.md
+        
         cat details.txt >> report.md
         cml-send-comment report.md 
