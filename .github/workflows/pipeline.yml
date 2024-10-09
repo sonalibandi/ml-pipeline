@@ -24,6 +24,12 @@ jobs:
       run: |
         sudo apt-get update && sudo apt-get install -y libc6
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'  
+
+
     # see: https://github.com/aws-actions/amazon-ecr-login
     - name: Log in to Amazon ECR
       id: login-ecr
