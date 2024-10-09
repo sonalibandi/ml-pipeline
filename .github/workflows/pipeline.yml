@@ -51,9 +51,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+      # Install Python and pip inside the Ubuntu 20.04 container
+    - name: Install Python and pip
+      run: |
+        apt-get update
+        apt-get install -y python3 python3-pip
+
     - name: Install GLIBC inside Docker 
       run: |
         apt-get update && apt-get install -y libc6
+
+        # Install required Python packages using pip
+    - name: Install Python dependencies
+      run: |
+        pip3 install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests fsspec s3fs tabulate
 
     
     - name: Fire SageMaker
@@ -68,7 +79,6 @@ jobs:
         IAM_ROLE_NAME: ${{ secrets.IAM_ROLE_NAME }}
         GITHUB_SHA: ${{ github.sha }}
       run: |
-        pip install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests fsspec s3fs tabulate
         python training-job.py
 
         # Create a markdown file with the training job details
