@@ -22,7 +22,8 @@ jobs:
 
     - name: Install GLIBC
       run: |
-        sudo apt-get update && sudo apt-get install -y libc6
+        sudo apt-get update
+        sudo apt-get install -y libc6
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -50,6 +51,13 @@ jobs:
     container: docker://dvcorg/cml-py3:latest
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install GLIBC inside Docker (if needed)
+      run: |
+        apt-get update 
+        apt-get install -y libc6
+
+    
     - name: Fire SageMaker
       id: sm_train
       env:
