@@ -20,6 +20,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
+    - name: Install GLIBC
+      run: |
+        sudo apt-get update && sudo apt-get install -y libc6
+
     # see: https://github.com/aws-actions/amazon-ecr-login
     - name: Log in to Amazon ECR
       id: login-ecr
