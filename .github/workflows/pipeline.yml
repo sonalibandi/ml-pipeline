@@ -8,7 +8,7 @@ env:
 
 jobs:
   build_image_push_to_ECR:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -19,6 +19,16 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
+
+    - name: Install GLIBC
+      run: |
+        sudo apt-get update && sudo apt-get install -y libc6
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'  
+
 
     # see: https://github.com/aws-actions/amazon-ecr-login
     - name: Log in to Amazon ECR
@@ -54,5 +64,12 @@ jobs:
       run: |
         pip install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests fsspec s3fs tabulate
         python training-job.py
+
+        # Create a markdown file with the training job details
+        echo "Training Job Submission Report" > report.md
+        echo "Training Job name: '$(cat training_job_name.txt)'" >> report.md
+        echo "Model Artifacts Location: 's3://$BUCKET_NAME/$PREFIX/output/$(cat training_job_name.txt)/model.tar.gz'" >> report.md
+        echo "Model hyperparameters: $(cat hyperparameters.txt)" >> report.md
+        
         cat details.txt >> report.md
         cml-send-comment report.md 
