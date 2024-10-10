@@ -40,17 +40,23 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
 
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == '404':
+            logging.info(f"reports.csv not found in S3 at {bucket_name}/{object_key}. Creating a new template.")
             columns = ['date_time', 'hyperparameters', 'commit_hash',
                        'training_job_name'] + list(metrics_dictionary.keys())
             pd.DataFrame(columns=columns).to_csv('./reports.csv', index=False)
 
             # Upload template reports df
+            logging.info(f"Uploading the newly created reports.csv to S3: {bucket_name}/{object_key}")
             s3.Bucket(bucket_name).upload_file('./reports.csv', object_key)
 
             # Load reports df
             reports_df = pd.read_csv('./reports.csv')
+        elif error_code == 'AccessDenied':
+            logging.error(f"Access denied to S3 bucket {bucket_name}. Check IAM permissions.")
+        raise
 
         else:
+            logging.error(f"Unexpected error: {e}")
             raise
 
     # Add new report to reports.csv
