@@ -33,11 +33,13 @@ output_folder_s3_uri = 's3://{}/{}/output/'.format(BUCKET_NAME, PREFIX)
 source_folder = 's3://{}/{}/source-folders'.format(BUCKET_NAME, PREFIX)
 base_job_name = 'boston-housing-model'
 
+# Use the correct ECR repository
+docker_image_uri = '752220616030.dkr.ecr.us-east-1.amazonaws.com/ecr_repo:latest'
 
 # Define estimator object
 boston_estimator = Estimator(
-    image_uri=f'{ACCOUNT_ID}.dkr.ecr.{REGION}.amazonaws.com/my-app:latest',
-    role=IAM_ROLE_NAME ,
+    image_uri= '752220616030.dkr.ecr.us-east-1.amazonaws.com/ecr_repo:latest',
+    role=IAM_ROLE_NAME,
     instance_count=1,
     instance_type=training_instance,
     output_path=output_folder_s3_uri,
