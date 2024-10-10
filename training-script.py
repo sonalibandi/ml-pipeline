@@ -105,7 +105,8 @@ def main():
                                         1:].values, validation_data.iloc[:, :1].values
 
     # Fit the model
-    n_estimators = int(hyperparameters['nestimators'])
+    #hardcoded the value to 10 
+    n_estimators = 10
     model = RandomForestRegressor(n_estimators=n_estimators)
     model.fit(X_train, y_train)
 
