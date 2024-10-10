@@ -1,5 +1,4 @@
 
 # ml-pipeline
 
-initial
-
+push image to ecr 
