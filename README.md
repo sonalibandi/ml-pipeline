@@ -1,5 +1,4 @@
 
 # ml-pipeline
 
-initial work
-
+initial commit
