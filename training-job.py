@@ -25,7 +25,7 @@ training_instance = 'ml.m5.large'
 # Replace with your data s3 path
 training_data_s3_uri = 's3://sample-sagemaker-cicd1/boston-housing-regression/train.csv'.format(
     BUCKET_NAME, PREFIX)
-validation_data_s3_uri = 's3://sample-sagemaker-cicd1/boston-housing-regression/test.csv'.format(
+validation_data_s3_uri = 's3://sample-sagemaker-cicd1/boston-housing-regression/valid.csv'.format(
     BUCKET_NAME, PREFIX)
 
 
