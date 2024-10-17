@@ -67,8 +67,9 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
     # Add new row
     new_row = dict({'date_time': date_time, 'hyperparameters': json.dumps(hyperparameters), 'commit_hash': commit_hash, 'training_job_name': training_job_name},
                    **metrics_dictionary)
-    new_report = pd.DataFrame(new_row, index=[0])
-    reports_df = reports_df.concat(new_report)
+    new_report = pd.DataFrame([new_row])
+   # Concatenate the new report to the existing reports_df
+    reports_df = pd.concat([reports_df, new_report], ignore_index=True)
 
     # Upload new reports dataframe
     reports_df.to_csv('./reports.csv', index=False)
