@@ -57,7 +57,7 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
 
         else:
             logging.error(f"Unexpected error: {e}")
-            raise
+        raise
 
     # Add new report to reports.csv
     # Use UTC time to avoid timezone heterogeneity
