@@ -94,7 +94,7 @@ def main():
     training_data = pd.read_csv(os.path.join(
         training_data_path, 'train.csv'))
     validation_data = pd.read_csv(os.path.join(
-        validation_data_path, 'test.csv'))
+        validation_data_path, 'valid.csv'))
 
     print(training_data)
     print(validation_data)
