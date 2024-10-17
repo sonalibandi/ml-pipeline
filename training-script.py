@@ -51,13 +51,14 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
 
             # Load reports df
             reports_df = pd.read_csv('./reports.csv')
-        elif error_code == 'AccessDenied':
+          
+        elif e.response['Error']['Code'] == 'AccessDenied':
             logging.error(f"Access denied to S3 bucket {bucket_name}. Check IAM permissions.")
-        raise
+            raise
 
         else:
             logging.error(f"Unexpected error: {e}")
-        raise
+            raise
 
     # Add new report to reports.csv
     # Use UTC time to avoid timezone heterogeneity
@@ -66,8 +67,9 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
     # Add new row
     new_row = dict({'date_time': date_time, 'hyperparameters': json.dumps(hyperparameters), 'commit_hash': commit_hash, 'training_job_name': training_job_name},
                    **metrics_dictionary)
-    new_report = pd.DataFrame(new_row, index=[0])
-    reports_df = reports_df.append(new_report)
+    new_report = pd.DataFrame([new_row])
+   # Concatenate the new report to the existing reports_df
+    reports_df = pd.concat([reports_df, new_report], ignore_index=True)
 
     # Upload new reports dataframe
     reports_df.to_csv('./reports.csv', index=False)
@@ -94,7 +96,7 @@ def main():
     training_data = pd.read_csv(os.path.join(
         training_data_path, 'train.csv'))
     validation_data = pd.read_csv(os.path.join(
-        validation_data_path, 'test.csv'))
+        validation_data_path, 'valid.csv'))
 
     print(training_data)
     print(validation_data)
