@@ -51,13 +51,14 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
 
             # Load reports df
             reports_df = pd.read_csv('./reports.csv')
-        elif error_code == 'AccessDenied':
+          
+        elif e.response['Error']['Code'] == 'AccessDenied':
             logging.error(f"Access denied to S3 bucket {bucket_name}. Check IAM permissions.")
-        raise
+            raise
 
         else:
             logging.error(f"Unexpected error: {e}")
-        raise
+            raise
 
     # Add new report to reports.csv
     # Use UTC time to avoid timezone heterogeneity
