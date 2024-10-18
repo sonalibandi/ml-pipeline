@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import requests
+import time
 import os
 import pandas as pd
 
@@ -65,6 +66,7 @@ hyperparameters_dictionary = boston_estimator.hyperparameters()
 
 report = pd.read_csv(f's3://{BUCKET_NAME}/{PREFIX}/reports.csv')
 while(len(report[report['commit_hash']==GITHUB_SHA]) == 0):
+    time.sleep(10)  # Wait for 5 seconds before retrying
     report = pd.read_csv(f's3://{BUCKET_NAME}/{PREFIX}/reports.csv')
 
 res = report[report['commit_hash']==GITHUB_SHA]
