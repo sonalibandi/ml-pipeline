@@ -10,10 +10,12 @@ jobs:
     - uses: actions/checkout@v2
 
     # Install Node.js and npm
-    - name: Install Node.js
+    - name: Install Node.js and npm
       run: |
         apt-get update
-        apt-get install -y nodejs npm
+        apt-get install -y curl
+        curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+        apt-get install -y nodejs
 
     # Install CML CLI
     - name: Install CML CLI
