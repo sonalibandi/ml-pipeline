@@ -2,11 +2,10 @@
 import os
 import joblib
 import requests
+import time
 import json
 from datetime import datetime, timezone
 import logging 
-import time
-
 
 
 import pandas as pd
