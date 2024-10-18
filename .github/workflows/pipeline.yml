@@ -66,6 +66,9 @@ jobs:
       run: |
         pip3 install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests fsspec s3fs tabulate
 
+    - name: Install CML CLI
+      run: |
+        npm install -g @dvcorg/cml
     
     - name: Fire SageMaker
       id: sm_train
@@ -82,11 +85,20 @@ jobs:
       run: |
         python3 training-job.py
 
+    - name: Check for generated files
+      run: |
+        if [ ! -f training_job_name.txt ]; then echo "Training job name file missing!"; exit 1; fi
+        if [ ! -f hyperparameters.txt ]; then echo "Hyperparameters file missing!"; exit 1; fi
+
+    - name: Create report
+      run: |
         # Create a markdown file with the training job details
         echo "Training Job Submission Report" > report.md
         echo "Training Job name: '$(cat training_job_name.txt)'" >> report.md
         echo "Model Artifacts Location: 's3://$BUCKET_NAME/$PREFIX/output/$(cat training_job_name.txt)/model.tar.gz'" >> report.md
         echo "Model hyperparameters: $(cat hyperparameters.txt)" >> report.md
-        
         cat details.txt >> report.md
+
+    - name: Post report with CML
+      run: |
         cml-send-comment report.md 
