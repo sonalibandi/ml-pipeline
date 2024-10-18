@@ -4,6 +4,7 @@ import joblib
 import requests
 import json
 from datetime import datetime, timezone
+import logging 
 
 
 import pandas as pd
@@ -11,6 +12,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 import boto3
 import botocore
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 
 def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
@@ -33,6 +37,7 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
     s3 = boto3.resource('s3')
 
     try:
+        logging.info(f"Attempting to download {object_key} from S3 bucket {bucket_name}")
         s3.Bucket(bucket_name).download_file(object_key, 'reports.csv')
 
         # Load reports df
@@ -78,6 +83,7 @@ def update_report_file(metrics_dictionary: dict, hyperparameters: dict,
 
 # Define main training function
 def main():
+  try:
     with open('/opt/ml/input/config/hyperparameters.json', 'r') as json_file:
         hyperparameters = json.load(json_file)
         print(hyperparameters)
@@ -135,8 +141,15 @@ def main():
     GITHUB_SHA = os.environ['GITHUB_SHA']
     TRAINING_JOB_NAME = os.environ['TRAINING_JOB_NAME']
 
+    if not all([REGION, PREFIX, BUCKET_NAME, GITHUB_SHA, TRAINING_JOB_NAME]):
+            logging.error("One or more environment variables are missing. Cannot update report.")
+            return
+
     update_report_file(metrics_dictionary=metrics_dictionary, hyperparameters=hyperparameters,
                        commit_hash=GITHUB_SHA, training_job_name=TRAINING_JOB_NAME, prefix=PREFIX, bucket_name=BUCKET_NAME)
+  except Exception as e:
+        logging.error(f"Error during training: {e}")
+        raise
 
 if __name__ == '__main__':
     main()
