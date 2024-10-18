@@ -5,6 +5,8 @@ import requests
 import json
 from datetime import datetime, timezone
 import logging 
+import time
+
 
 
 import pandas as pd
