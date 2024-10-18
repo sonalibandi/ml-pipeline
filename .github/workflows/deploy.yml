@@ -8,6 +8,23 @@ jobs:
     container: docker://dvcorg/cml-py3:latest
     steps:
     - uses: actions/checkout@v2
+
+    # Install Node.js and npm
+    - name: Install Node.js
+      run: |
+        apt-get update
+        apt-get install -y nodejs npm
+
+    # Install CML CLI
+    - name: Install CML CLI
+      run: |
+        npm install -g @dvcorg/cml
+
+    # Install Python Dependencies
+    - name: Install Python Dependencies
+      run: |
+        pip install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests
+        
     - name: Fire SageMaker
       id: sm_train
       env:
@@ -15,5 +32,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
       run: |
-        pip install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests
         python deploy.py
