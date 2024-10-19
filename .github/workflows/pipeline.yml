@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Ensure full history is fetched
     # see: https://github.com/aws-actions/configure-aws-credentials  
 
     - name: Configure AWS Credentials
@@ -49,7 +51,10 @@ jobs:
     runs-on: [ubuntu-latest]
     container: docker://ubuntu:20.04
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Ensure full history is fetched
 
       # Install Git
     - name: Install Git
