@@ -9,9 +9,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # Set Git Safe Directory to avoid errors
-    - name: Set Git Safe Directory
-      run: git config --global --add safe.directory $(pwd)
 
     # Install Node.js and npm
     - name: Install Node.js and npm
