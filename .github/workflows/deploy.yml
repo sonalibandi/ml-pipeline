@@ -24,7 +24,7 @@ jobs:
     # Install CML CLI
     - name: Install CML CLI
       run: |
-        npm install -g @dvcorg/cml
+        npm install -g @dvcorg/cml@latest
 
     # Install Python Dependencies
     - name: Install Python Dependencies
