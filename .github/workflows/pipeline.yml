@@ -51,10 +51,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # Set Git Safe Directory to avoid errors
-    - name: Set Git Safe Directory
-      run: git config --global --add safe.directory $(pwd)
-
       # Install Python and pip inside the Ubuntu 20.04 container
     - name: Install Python and pip
       run: |
