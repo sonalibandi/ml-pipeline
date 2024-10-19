@@ -75,7 +75,17 @@ jobs:
 
     - name: Install CML CLI
       run: |
-        npm install -g @dvcorg/cml -verbose
+        npm install -g @dvcorg/cml@latest
+
+      # Set Git Safe Directory to avoid errors
+    - name: Set Git Safe Directory
+      run: git config --global --add safe.directory $(pwd)
+
+      # Debug Git Configuration
+    - name: Debug Git Configuration
+      run: |
+        git status
+        git config --list
     
     - name: Fire SageMaker
       id: sm_train
@@ -107,5 +117,9 @@ jobs:
         cat details.txt >> report.md
 
     - name: Post report with CML
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GIT_COMMITTER_NAME: 'Sonali Bandi'
+        GIT_COMMITTER_EMAIL: 'bandi.so+dev@northeastern.edu'
       run: |
         cml-send-comment report.md 
