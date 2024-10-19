@@ -11,11 +11,15 @@ import botocore
 initial_instance_count = 1
 endpoint_instance_type = 'ml.m5.large'
 
+
 BUCKET_NAME = 'sample-sagemaker-cicd-tuto1'
 PREFIX = 'bouston-housing-regression'
 OBJECT_KEY = f'{PREFIX}/reports.csv'
 
-s3 = boto3.resource('s3')
+# Ensure the AWS region is set
+region = os.environ.get('AWS_DEFAULT_REGION', 'us-east-1')  # Default to 'us-east-1' if not set
+
+s3 = boto3.resource('s3', region_name=region)
 
 try:
        s3.Bucket(BUCKET_NAME).download_file(OBJECT_KEY, 'reports.csv')
