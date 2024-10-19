@@ -81,11 +81,7 @@ jobs:
     - name: Install CML CLI
       run: |
         npm install -g @dvcorg/cml@latest
-
-      # Set Git Safe Directory to avoid errors
-    - name: Set Git Safe Directory
-      run: git config --global --add safe.directory $(pwd)
-
+        
       # Debug Git Configuration
     - name: Debug Git Configuration
       run: |
