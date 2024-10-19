@@ -12,8 +12,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Ensure full history is fetched
+      
     # see: https://github.com/aws-actions/configure-aws-credentials  
 
     - name: Configure AWS Credentials
@@ -51,16 +50,12 @@ jobs:
     runs-on: [ubuntu-latest]
     container: docker://ubuntu:20.04
     steps:
-    - name: Checkout Repository
       uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Ensure full history is fetched
-
-      # Install Python and pip inside the Ubuntu 20.04 container
+      
+     # Install Python and pip inside the Ubuntu 20.04 container
+    
     - name: Install Python and pip
-      run: |
-        apt-get update
-        apt-get install -y python3 python3-pip
+      run: apt-get update && apt-get install -y python3 python3-pip
 
     - name: Install GLIBC inside Docker 
       run: |
@@ -103,6 +98,10 @@ jobs:
       run: |
         python3 training-job.py
 
+        # Debug step to list files
+    - name: Debug - List Files
+      run: ls -la
+
     - name: Check for generated files
       run: |
         if [ ! -f training_job_name.txt ]; then echo "Training job name file missing!"; exit 1; fi
@@ -118,9 +117,5 @@ jobs:
         cat details.txt >> report.md
 
     - name: Post report with CML
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GIT_COMMITTER_NAME: 'Sonali Bandi'
-        GIT_COMMITTER_EMAIL: 'bandi.so+dev@northeastern.edu'
       run: |
         cml-send-comment report.md 
