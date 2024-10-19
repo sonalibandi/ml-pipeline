@@ -18,11 +18,6 @@ jobs:
         curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
         apt-get install -y nodejs
 
-    # Install CML CLI
-    - name: Install CML CLI
-      run: |
-        npm install -g @dvcorg/cml@latest
-
     # Install Python Dependencies
     - name: Install Python Dependencies
       run: |
