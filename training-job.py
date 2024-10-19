@@ -63,6 +63,14 @@ boston_estimator.fit({'training': training_data_s3_uri,
 training_job_name = boston_estimator.latest_training_job.name
 hyperparameters_dictionary = boston_estimator.hyperparameters()
 
+# Write the training job name to a file
+with open('training_job_name.txt', 'w') as f:
+    f.write(training_job_name)
+
+# Write hyperparameters to a file
+with open('hyperparameters.txt', 'w') as f:
+    f.write(str(hyperparameters_dictionary))
+
 
 report = pd.read_csv(f's3://{BUCKET_NAME}/{PREFIX}/reports.csv')
 while(len(report[report['commit_hash']==GITHUB_SHA]) == 0):

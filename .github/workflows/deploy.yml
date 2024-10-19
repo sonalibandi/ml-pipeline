@@ -1,0 +1,41 @@
+name: deploy_endpoint
+on:
+  push:
+    branches: [ main ]
+jobs:
+  run: 
+    runs-on: [ubuntu-latest]
+    container: docker://dvcorg/cml-py3:latest
+    steps:
+    - uses: actions/checkout@v2
+
+    # Set Git Safe Directory to avoid errors
+    - name: Set Git Safe Directory
+      run: git config --global --add safe.directory $(pwd)
+
+    # Install Node.js and npm
+    - name: Install Node.js and npm
+      run: |
+        apt-get update
+        apt-get install -y curl
+        curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+        apt-get install -y nodejs
+
+    # Install CML CLI
+    - name: Install CML CLI
+      run: |
+        npm install -g @dvcorg/cml
+
+    # Install Python Dependencies
+    - name: Install Python Dependencies
+      run: |
+        pip install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests
+        
+    - name: Fire SageMaker
+      id: sm_train
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      run: |
+        python deploy.py
