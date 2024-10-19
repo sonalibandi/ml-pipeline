@@ -12,6 +12,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      
     # see: https://github.com/aws-actions/configure-aws-credentials  
 
     - name: Configure AWS Credentials
@@ -49,13 +50,12 @@ jobs:
     runs-on: [ubuntu-latest]
     container: docker://ubuntu:20.04
     steps:
-    - uses: actions/checkout@v2
-
-      # Install Python and pip inside the Ubuntu 20.04 container
+      uses: actions/checkout@v2
+      
+     # Install Python and pip inside the Ubuntu 20.04 container
+    
     - name: Install Python and pip
-      run: |
-        apt-get update
-        apt-get install -y python3 python3-pip
+      run: apt-get update && apt-get install -y python3 python3-pip
 
     - name: Install GLIBC inside Docker 
       run: |
@@ -75,7 +75,13 @@ jobs:
 
     - name: Install CML CLI
       run: |
-        npm install -g @dvcorg/cml -verbose
+        npm install -g @dvcorg/cml@latest
+        
+      # Debug Git Configuration
+    - name: Debug Git Configuration
+      run: |
+        git status
+        git config --list
     
     - name: Fire SageMaker
       id: sm_train
@@ -91,6 +97,10 @@ jobs:
         GITHUB_SHA: ${{ github.sha }}
       run: |
         python3 training-job.py
+
+        # Debug step to list files
+    - name: Debug - List Files
+      run: ls -la
 
     - name: Check for generated files
       run: |
