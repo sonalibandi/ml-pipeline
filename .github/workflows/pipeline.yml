@@ -50,18 +50,18 @@ jobs:
     runs-on: [ubuntu-latest]
     container: docker://ubuntu:20.04
     steps:
-      uses: actions/checkout@v2
+    - uses: actions/checkout@v2
       
-     # Install Python and pip inside the Ubuntu 20.04 container
-    
+     # Install Python and pip inside the Ubuntu 20.04 container    
     - name: Install Python and pip
-      run: apt-get update && apt-get install -y python3 python3-pip
+      run: |
+        apt-get update && apt-get install -y python3 python3-pip
 
     - name: Install GLIBC inside Docker 
       run: |
         apt-get update && apt-get install -y libc6
 
-        # Install required Python packages using pip
+    # Install required Python packages using pip
     - name: Install Python dependencies
       run: |
         pip3 install --no-cache-dir --upgrade awscli pandas boto3 sagemaker requests fsspec s3fs tabulate
