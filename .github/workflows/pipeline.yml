@@ -76,12 +76,6 @@ jobs:
     - name: Install CML CLI
       run: |
         npm install -g @dvcorg/cml@latest
-        
-      # Debug Git Configuration
-    - name: Debug Git Configuration
-      run: |
-        git status
-        git config --list
     
     - name: Fire SageMaker
       id: sm_train
