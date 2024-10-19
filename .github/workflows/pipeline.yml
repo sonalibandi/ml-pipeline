@@ -56,12 +56,6 @@ jobs:
       with:
         fetch-depth: 0  # Ensure full history is fetched
 
-      # Install Git
-    - name: Install Git
-      run: |
-        apt-get update
-        apt-get install -y git
-
       # Install Python and pip inside the Ubuntu 20.04 container
     - name: Install Python and pip
       run: |
