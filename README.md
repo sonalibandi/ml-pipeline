@@ -43,12 +43,3 @@ Ensure the following secrets are set up in your GitHub repository:
 - `REPO_NAME`: Name of your Amazon ECR repository.
 - `BUCKET_NAME`: Name of your S3 bucket for model artifacts.
 
-## File Structure
-
-```bash
-├── deploy.py                # Script to deploy the model to SageMaker endpoint
-├── pipeline.yml             # CI/CD pipeline for Docker build and push
-├── deploy.yml               # Deployment pipeline for model deployment
-├── training-script.py       # Training script for the machine learning model
-├── Dockerfile               # Dockerfile for building the image
-└── README.md                # Project documentation
