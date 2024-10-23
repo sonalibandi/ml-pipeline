@@ -43,3 +43,36 @@ Ensure the following secrets are set up in your GitHub repository:
 - `REPO_NAME`: Name of your Amazon ECR repository.
 - `BUCKET_NAME`: Name of your S3 bucket for model artifacts.
 
+
+
++--------------------+      +-------------------------+      +------------------+
+| Code pushed to   | ---> | GitHub Actions Pipeline | ---> | Amazon ECR (Docker|
+|    to GitHub     |      | (pipeline.yml)          |      | Image Repository) |
++--------------------+      +-------------------------+      +------------------+
+                                                                      |
+                                                                      |
+                                                               +------------------+
+                                                               | SageMaker Pulls  |
+                                                               | Docker Image from|
+                                                               | Amazon ECR       |
+                                                               +------------------+
+                                                                      |
+                                                                      |
++---------------------+       +----------------------+       +--------------------+
+| Amazon S3 (Input    | <---  | SageMaker Training Job| --->  | Amazon S3 (Trained |
+| Data for Training)  |       | (training-script.py)  |       | Model Output)      |
++---------------------+       +----------------------+       +--------------------+
+                                                                      |
+                                                                      |
+                                                               +---------------------+
+                                                               | SageMaker Endpoint  |
+                                                               | (model deployment   |
+                                                               | via deploy.py)      |
+                                                               +---------------------+
+                                                                      |
+                                                                      |
+                                                           +---------------------------+
+                                                           | Real-Time Predictions     |
+                                                           | (API Endpoint)            |
+                                                           +---------------------------+
+
