@@ -47,16 +47,17 @@ Ensure the following secrets are set up in your GitHub repository:
 ### Flow:
 
 1. Code pushed to GitHub
+   
    └── Triggers GitHub Actions CI Pipeline (pipeline.yml for dev branch)
 
-2. GitHub Actions CI Pipeline (pipeline.yml)
+3. GitHub Actions CI Pipeline (pipeline.yml)
    └── Builds Docker Image (defined in Dockerfile)
    └── Pushes Docker Image to Amazon Elastic Container Registry (ECR)
 
-3. Amazon ECR
+4. Amazon ECR
    └── Stores Docker Image for Training
 
-4. SageMaker Training Job (Triggered from training-job.py)
+5. SageMaker Training Job (Triggered from training-job.py)
    └── Pulls Docker Image from Amazon ECR
    └── Fetches Training and Validation Data from Amazon S3
    └── Trains Model using SageMaker (training-script.py)
