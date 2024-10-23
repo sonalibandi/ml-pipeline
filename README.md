@@ -84,8 +84,6 @@ Ensure the following secrets are set up in your GitHub repository:
     
    └── Deploys Trained Model to a SageMaker Endpoint for Real-Time Predictions
 
-11. SageMaker Endpoint
-    
-   └── Serves Real-Time Predictions via API
+
 
 
