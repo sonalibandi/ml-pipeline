@@ -51,13 +51,16 @@ Ensure the following secrets are set up in your GitHub repository:
    └── Triggers GitHub Actions CI Pipeline (pipeline.yml for dev branch)
 
 3. GitHub Actions CI Pipeline (pipeline.yml)
+
    └── Builds Docker Image (defined in Dockerfile)
    └── Pushes Docker Image to Amazon Elastic Container Registry (ECR)
 
-4. Amazon ECR
+5. Amazon ECR
+
    └── Stores Docker Image for Training
 
-5. SageMaker Training Job (Triggered from training-job.py)
+7. SageMaker Training Job (Triggered from training-job.py)
+
    └── Pulls Docker Image from Amazon ECR
    └── Fetches Training and Validation Data from Amazon S3
    └── Trains Model using SageMaker (training-script.py)
@@ -66,15 +69,19 @@ Ensure the following secrets are set up in your GitHub repository:
 ---
 
 5. Code pushed to GitHub (main branch)
+   
    └── Triggers GitHub Actions Deployment Pipeline (deploy.yml)
 
-6. GitHub Actions Deployment Pipeline (deploy.yml)
+7. GitHub Actions Deployment Pipeline (deploy.yml)
+   
    └── Runs deploy.py script to deploy the model to SageMaker
 
-7. SageMaker Endpoint Creation
+9. SageMaker Endpoint Creation
+    
    └── Deploys Trained Model to a SageMaker Endpoint for Real-Time Predictions
 
-8. SageMaker Endpoint
+11. SageMaker Endpoint
+    
    └── Serves Real-Time Predictions via API
 
 
