@@ -44,35 +44,64 @@ Ensure the following secrets are set up in your GitHub repository:
 - `BUCKET_NAME`: Name of your S3 bucket for model artifacts.
 
 
-
-+--------------------+      +-------------------------+      +------------------+
-| Code pushed to   | ---> | GitHub Actions Pipeline | ---> | Amazon ECR (Docker|
-|    to GitHub     |      | (pipeline.yml)          |      | Image Repository) |
-+--------------------+      +-------------------------+      +------------------+
-                                                                      |
-                                                                      |
-                                                               +------------------+
-                                                               | SageMaker Pulls  |
-                                                               | Docker Image from|
-                                                               | Amazon ECR       |
-                                                               +------------------+
-                                                                      |
-                                                                      |
-+---------------------+       +----------------------+       +--------------------+
-| Amazon S3 (Input    | <---  | SageMaker Training Job| --->  | Amazon S3 (Trained |
-| Data for Training)  |       | (training-script.py)  |       | Model Output)      |
-+---------------------+       +----------------------+       +--------------------+
-                                                                      |
-                                                                      |
-                                                               +---------------------+
-                                                               | SageMaker Endpoint  |
-                                                               | (model deployment   |
-                                                               | via deploy.py)      |
-                                                               +---------------------+
-                                                                      |
-                                                                      |
-                                                           +---------------------------+
-                                                           | Real-Time Predictions     |
-                                                           | (API Endpoint)            |
-                                                           +---------------------------+
++----------------------------+
+|      Developer Pushes       |
+|         Code to GitHub      |
++----------------------------+
+              |
+              v
++----------------------------+
+|  GitHub Actions CI Pipeline |
+|     (pipeline.yml and       |
+|       deploy.yml)           |
++----------------------------+
+              |
+              v
++----------------------------+
+|  Build Docker Image in CI   |
+|  and Push to Amazon ECR     |
++----------------------------+
+              |
+              v
++----------------------------+
+|   Amazon Elastic Container  |
+|        Registry (ECR)       |
+|     Stores Docker Image     |
++----------------------------+
+              |
+              v
++----------------------------+        +----------------------------+
+|    SageMaker Training Job   | <---- |  Amazon S3 (Input Data for  |
+|  Pull Docker Image from ECR |       |    Training and Validation) |
++----------------------------+        +----------------------------+
+              |
+              v
++----------------------------+
+|   Train Model using         |
+|  SageMaker (training-script)|
++----------------------------+
+              |
+              v
++----------------------------+        +----------------------------+
+|   Amazon S3 (Store Trained  | ----> |  Save Trained Model Output  |
+|       Model Artifacts)      |       |        in S3                |
++----------------------------+        +----------------------------+
+              |
+              v
++----------------------------+
+|  SageMaker Deployment to    |
+|   Endpoint (deploy.py)      |
++----------------------------+
+              |
+              v
++----------------------------+
+|  SageMaker Endpoint for     |
+|  Real-Time Model Inference  |
++----------------------------+
+              |
+              v
++----------------------------+
+|  Serve Real-Time Predictions|
+|    via API Endpoint         |
++----------------------------+
 
