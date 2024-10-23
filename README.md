@@ -53,6 +53,7 @@ Ensure the following secrets are set up in your GitHub repository:
 3. GitHub Actions CI Pipeline (pipeline.yml)
 
    └── Builds Docker Image (defined in Dockerfile)
+   
    └── Pushes Docker Image to Amazon Elastic Container Registry (ECR)
 
 5. Amazon ECR
@@ -62,8 +63,11 @@ Ensure the following secrets are set up in your GitHub repository:
 7. SageMaker Training Job (Triggered from training-job.py)
 
    └── Pulls Docker Image from Amazon ECR
+   
    └── Fetches Training and Validation Data from Amazon S3
+   
    └── Trains Model using SageMaker (training-script.py)
+   
    └── Saves Trained Model and Artifacts to Amazon S3
 
 ---
