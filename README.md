@@ -1,4 +1,4 @@
-# Machine Learning CI/CD Pipeline using GitHub Actions and AWS SageMaker
+# End-to-End Machine Learning Pipeline: GitHub Actions and AWS SageMaker Integration
 
 This repository demonstrates a CI/CD pipeline for building, training, and deploying machine learning models using **GitHub Actions** and **AWS SageMaker**. The pipeline automatically builds Docker images, pushes them to **Amazon ECR**, triggers SageMaker training jobs, and deploys the trained model to an endpoint.
 
